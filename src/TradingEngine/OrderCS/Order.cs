@@ -25,6 +25,14 @@ namespace TradingEngineServer.Orders
                     throw new ArgumentOutOfRangeException(nameof(currentQuantity), "Quantity must be greater than zero.");
 
           }
+          public Order(ModifyOrder modifyOrder)
+               : this(modifyOrder, modifyOrder.Price, modifyOrder.Quantity, modifyOrder.Quantity, modifyOrder.IsBuySide)
+
+
+          {
+
+          }
+
 
           //Methods
           public void increaseQuantity(uint quantitydelta)
@@ -34,7 +42,7 @@ namespace TradingEngineServer.Orders
           }
           public void decreaseQuantity(uint quantitydelta)
           { 
-               if(quantitydelta < CurrentQuantity)
+               if(quantitydelta > CurrentQuantity)
                     throw new InvalidOperationException("You do not have enough quantity");
                CurrentQuantity -= quantitydelta;
           }

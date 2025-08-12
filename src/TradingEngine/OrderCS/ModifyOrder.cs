@@ -32,6 +32,10 @@ namespace TradingEngineServer.Orders
           {
                return new CancelOrder(this);
           }
+          public Order ToNewOrder()
+          { 
+               return new Order(this);
+          }
 
 
           //+_+_+_+_+_+//
