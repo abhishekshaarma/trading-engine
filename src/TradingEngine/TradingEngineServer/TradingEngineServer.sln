@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35506.116 d17.12
+VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingEngineServer", "TradingEngineServer.csproj", "{44160008-88C3-4726-A062-03BE49162C55}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstrumentCS", "..\InstrumentCS\InstrumentCS.csproj", "{B956A9C3-9909-406B-B472-497AFC44ACF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersCS", "..\OrderCS\OrdersCS.csproj", "{AF00CD72-0274-43B8-8CC0-E255B9C6BAF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderbookCS", "..\OrderbookCS\OrderbookCS.csproj", "{F9063650-A429-4847-B713-FF6CC5BA5ABF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{AF00CD72-0274-43B8-8CC0-E255B9C6BAF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF00CD72-0274-43B8-8CC0-E255B9C6BAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF00CD72-0274-43B8-8CC0-E255B9C6BAF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9063650-A429-4847-B713-FF6CC5BA5ABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9063650-A429-4847-B713-FF6CC5BA5ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9063650-A429-4847-B713-FF6CC5BA5ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9063650-A429-4847-B713-FF6CC5BA5ABF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  <LangVersion>latest</LangVersion>
+	  <AssemblyName>TradingEngineServer.Orderbook</AssemblyName>
+	  <RootNamespace>TradingEngineServer.Orderbook</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InstrumentCS\InstrumentCS.csproj" />
+    <ProjectReference Include="..\LoggingCS\LoggingCS\LoggingCS.csproj" />
+    <ProjectReference Include="..\OrderCS\OrdersCS.csproj" />
+    <ProjectReference Include="..\TradingEngineServer\TradingEngineServer.csproj" />
+  </ItemGroup>
+
+</Project>

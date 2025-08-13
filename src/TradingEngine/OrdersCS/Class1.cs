@@ -1,7 +1,6 @@
-﻿namespace OrdersCS
-{
-     public class Class1
-     {
+﻿namespace OrdersCS;
 
-     }
+public class Class1
+{
+
 }
