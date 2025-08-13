@@ -1,16 +1,6 @@
 # **Trading Engine**
 High-performance trading engine with async logging, order management, and matching engine built on .NET 8 and TPL Dataflow.
 
-## **Quick Start**
-
-```bash
-# Build
-dotnet build TradingEngine.sln
-
-# Run
-cd TradingEngineServer
-dotnet run
-```
 
 ## **Architecture**
 * **LoggingCS**: Async logging library using `BufferBlock<LogInformation>`
