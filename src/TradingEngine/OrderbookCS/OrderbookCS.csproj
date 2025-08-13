@@ -10,10 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Users\abhis\OneDrive\Desktop\trading-engine\src\TradingEngine\OrdersCS\OrdersCS.csproj" />
     <ProjectReference Include="..\InstrumentCS\InstrumentCS.csproj" />
-    <ProjectReference Include="..\LoggingCS\LoggingCS\LoggingCS.csproj" />
     <ProjectReference Include="..\OrderCS\OrdersCS.csproj" />
-    <ProjectReference Include="..\TradingEngineServer\TradingEngineServer.csproj" />
   </ItemGroup>
 
 </Project>
