@@ -11,7 +11,7 @@ using TradingEngineServer.Orders;
 
 namespace TradingEngineServer.Orderbook
 {
-     public class Orderbook : IRetrievalOrderbook
+     public class Orderbook : IRetrievalOrderbook, IMatchingOrderbook
      {
           private readonly Secuirity _instrument;
           private readonly Dictionary<long, OrderbookEntry> _orders = new Dictionary<long, OrderbookEntry>();
@@ -172,6 +172,114 @@ namespace TradingEngineServer.Orderbook
                     //obe.Previous.Next = null;
                }
                internalBook.Remove(orderId);
+          }
+
+          public MatchResults Match()
+          {
+               var results = new MatchResults();
+               
+               // Continue matching while there are crossing orders
+               while (CanMatch())
+               {
+                    var bestBid = _bidLimits.Max;
+                    var bestAsk = _askLimits.Min;
+                    
+                    if (bestBid == null || bestAsk == null || bestBid.Price < bestAsk.Price)
+                         break;
+                    
+                    // Match orders at this price level
+                    MatchAtPriceLevel(bestBid, bestAsk, results);
+               }
+               
+               return results;
+          }
+          
+          private bool CanMatch()
+          {
+               return _bidLimits.Any() && _askLimits.Any() && 
+                      _bidLimits.Max.Price >= _askLimits.Min.Price;
+          }
+          
+          private void MatchAtPriceLevel(Limit bidLimit, Limit askLimit, MatchResults results)
+          {
+               var bidEntry = bidLimit.Head;
+               var askEntry = askLimit.Head;
+               
+               while (bidEntry != null && askEntry != null && 
+                      bidEntry.CurrentOrder.CurrentQuantity > 0 && 
+                      askEntry.CurrentOrder.CurrentQuantity > 0)
+               {
+                    var matchQuantity = Math.Min(bidEntry.CurrentOrder.CurrentQuantity, askEntry.CurrentOrder.CurrentQuantity);
+                    var matchPrice = DetermineMatchPrice(bidEntry.CurrentOrder, askEntry.CurrentOrder, bidEntry, askEntry);
+                    
+                    // Create filled orders
+                    var bidFilled = new TradingEngineServer.Orders.OrderRecord(
+                         bidEntry.CurrentOrder.OrderId, 
+                         matchQuantity, 
+                         matchPrice, 
+                         bidEntry.CurrentOrder.IsBuySide, 
+                         bidEntry.CurrentOrder.Username, 
+                         int.Parse(bidEntry.CurrentOrder.SecuirityId), 
+                         0);
+                    
+                    var askFilled = new TradingEngineServer.Orders.OrderRecord(
+                         askEntry.CurrentOrder.OrderId, 
+                         matchQuantity, 
+                         matchPrice, 
+                         askEntry.CurrentOrder.IsBuySide, 
+                         askEntry.CurrentOrder.Username, 
+                         int.Parse(askEntry.CurrentOrder.SecuirityId), 
+                         0);
+                    
+                    results.AddFilledOrder(bidFilled);
+                    results.AddFilledOrder(askFilled);
+                    
+                    // Update quantities
+                    bidEntry.CurrentOrder.decreaseQuantity(matchQuantity);
+                    askEntry.CurrentOrder.decreaseQuantity(matchQuantity);
+                    
+                    // Remove fully filled orders
+                    if (bidEntry.CurrentOrder.CurrentQuantity == 0)
+                    {
+                         var nextBid = bidEntry.Next;
+                         RemoveOrder(bidEntry.CurrentOrder.OrderId, bidEntry, _orders);
+                         bidEntry = nextBid;
+                         
+                         // Update limit head if needed
+                         if (bidEntry == null)
+                              bidLimit.Head = null;
+                         else
+                              bidLimit.Head = bidEntry;
+                    }
+                    
+                    if (askEntry.CurrentOrder.CurrentQuantity == 0)
+                    {
+                         var nextAsk = askEntry.Next;
+                         RemoveOrder(askEntry.CurrentOrder.OrderId, askEntry, _orders);
+                         askEntry = nextAsk;
+                         
+                         // Update limit head if needed
+                         if (askEntry == null)
+                              askLimit.Head = null;
+                         else
+                              askLimit.Head = askEntry;
+                    }
+               }
+               
+               // Clean up empty limits
+               if (bidLimit.isEmpty)
+                    _bidLimits.Remove(bidLimit);
+               if (askLimit.isEmpty)
+                    _askLimits.Remove(askLimit);
+          }
+          
+          private long DetermineMatchPrice(Order bidOrder, Order askOrder, OrderbookEntry bidEntry, OrderbookEntry askEntry)
+          {
+               // Price-time priority: match at the price of the order that arrived first
+               if (bidEntry.CreationTime <= askEntry.CreationTime)
+                    return bidOrder.Price;
+               else
+                    return askOrder.Price;
           }
      }
 }

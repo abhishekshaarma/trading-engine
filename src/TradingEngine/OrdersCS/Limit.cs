@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradingEngineServer.Orders;
 
 namespace TradingEngineServer.Orders
 {
      public class Limit
      {
+          public Limit(long price)
+          {
+               Price = price;
+          }
+          
           public long Price { get; set; }
           public OrderbookEntry Head { get; set; }
           public OrderbookEntry Tail { get; set; }
@@ -63,9 +69,9 @@ namespace TradingEngineServer.Orders
                return totalQuantity;
           }
 
-          public List<OrderRecord> GetLevelOrderRecord()
+          public List<TradingEngineServer.Orders.OrderRecord> GetLevelOrderRecord()
           { 
-               List<OrderRecord> records = new List<OrderRecord>();
+               List<TradingEngineServer.Orders.OrderRecord> records = new List<TradingEngineServer.Orders.OrderRecord>();
                OrderbookEntry headPointer = Head;
                uint theoreticalQueuePosition = 0;
                while (headPointer != null)
@@ -73,7 +79,7 @@ namespace TradingEngineServer.Orders
                     var CurrentOrder = headPointer.CurrentOrder;
                     if (CurrentOrder.CurrentQuantity != 0)
                     {
-                         records.Add(new OrderRecord(CurrentOrder.OrderId, CurrentOrder.CurrentQuantity, CurrentOrder.Price, CurrentOrder.IsBuySide, CurrentOrder.Username, int.Parse(CurrentOrder.SecuirityId), theoreticalQueuePosition));
+                         records.Add(new TradingEngineServer.Orders.OrderRecord(CurrentOrder.OrderId, CurrentOrder.CurrentQuantity, CurrentOrder.Price, CurrentOrder.IsBuySide, CurrentOrder.Username, int.Parse(CurrentOrder.SecuirityId), theoreticalQueuePosition));
                     }
                     theoreticalQueuePosition++;
                     headPointer = headPointer.Next;

@@ -17,10 +17,10 @@ namespace TradingEngineServer.Orders
 
           }
           public Order CurrentOrder { get; private set; }
-          public Order CreationTime { get; private set; }
+          public DateTime CreationTime { get; private set; }
           public Limit ParentLimit { get; private set; }
           
-          public OrderbookEntry Next { get; private set; }
-          public OrderbookEntry Previous { get; private set; }
+          public OrderbookEntry Next { get; set; }
+          public OrderbookEntry Previous { get; set; }
      }
 }
