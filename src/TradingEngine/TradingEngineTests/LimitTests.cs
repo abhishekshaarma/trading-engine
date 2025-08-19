@@ -15,6 +15,7 @@ namespace TradingEngineTests
             var limit = new Limit(100);
 
             // Assert
+            Console.WriteLine($"[Limit_EmptyLimit_IsEmptyTrue] Price={limit.Price}, isEmpty={limit.isEmpty}, Head={(limit.Head == null ? "null" : "not-null")}, Tail={(limit.Tail == null ? "null" : "not-null")} ");
             Assert.True(limit.isEmpty);
             Assert.Null(limit.Head);
             Assert.Null(limit.Tail);
@@ -34,6 +35,7 @@ namespace TradingEngineTests
             limit.Tail = entry;
 
             // Assert
+            Console.WriteLine($"[Limit_WithSingleOrder_IsEmptyFalse] Side={limit.Side}, OrderCount={limit.GetLevelOrderCount()}, TotalQty={limit.GetLevelTotalQuantity()} ");
             Assert.False(limit.isEmpty);
             Assert.Equal(Side.Bids, limit.Side);
             Assert.Equal(1, (double)limit.GetLevelOrderCount());
@@ -57,6 +59,7 @@ namespace TradingEngineTests
             entry2.Previous = entry1;
 
             // Assert
+            Console.WriteLine($"[Limit_WithMultipleOrders_CountsCorrectly] Side={limit.Side}, OrderCount={limit.GetLevelOrderCount()}, TotalQty={limit.GetLevelTotalQuantity()} ");
             Assert.False(limit.isEmpty);
             Assert.Equal(2, (double)limit.GetLevelOrderCount());
             Assert.Equal(25u, limit.GetLevelTotalQuantity());
@@ -82,6 +85,7 @@ namespace TradingEngineTests
             var records = limit.GetLevelOrderRecord();
 
             // Assert
+            Console.WriteLine($"[Limit_GetLevelOrderRecord_ReturnsCorrectRecords] Count={records.Count}, Records=[{string.Join(", ", records.Select(r => $"(Id={r.OrderId},Qty={r.Quantity},Pos={r.TheoriticalQueuePosition})"))}] ");
             Assert.Equal(2, records.Count);
             Assert.Equal(1, records[0].OrderId);
             Assert.Equal(10u, records[0].Quantity);
@@ -112,6 +116,7 @@ namespace TradingEngineTests
             var records = limit.GetLevelOrderRecord();
 
             // Assert
+            Console.WriteLine($"[Limit_WithZeroQuantityOrder_ExcludedFromCounts] OrderCount={orderCount}, TotalQty={totalQuantity}, RecordsCount={records.Count} ");
             Assert.Equal(1, (double)orderCount); // Only non-zero quantity orders
             Assert.Equal(10u, totalQuantity);
                Assert.Equal(1, records.Count);
@@ -131,6 +136,7 @@ namespace TradingEngineTests
             limit.Tail = entry;
 
             // Assert
+            Console.WriteLine($"[Limit_AskSide_ReturnsCorrectSide] Side={limit.Side} ");
             Assert.Equal(Side.Asks, limit.Side);
         }
 
@@ -141,6 +147,7 @@ namespace TradingEngineTests
             var limit = new Limit(100);
 
             // Assert
+            Console.WriteLine($"[Limit_UnknownSide_WhenEmpty] Side={limit.Side} ");
             Assert.Equal(Side.Unknown, limit.Side);
         }
 
@@ -151,6 +158,7 @@ namespace TradingEngineTests
             var limit = new Limit(150);
 
             // Assert
+            Console.WriteLine($"[Limit_PriceProperty_ReturnsCorrectValue] Price={limit.Price} ");
             Assert.Equal(150, limit.Price);
         }
 

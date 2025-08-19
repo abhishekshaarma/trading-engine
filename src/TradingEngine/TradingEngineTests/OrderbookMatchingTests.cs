@@ -43,6 +43,7 @@ namespace TradingEngineTests
             var results = _orderbook.Match();
 
             // Assert
+            Console.WriteLine($"[Match_SingleBidOrder_NoMatching] HasMatches={results.HasMatches}, BookCount={_orderbook.Count}, Bids={_orderbook.GetBidOrders().Count}, Asks={_orderbook.GetAskOrders().Count}");
             Assert.False(results.HasMatches);
             Assert.Equal(1, _orderbook.Count);
             Assert.Equal(1, _orderbook.GetBidOrders().Count);
@@ -60,6 +61,7 @@ namespace TradingEngineTests
             var results = _orderbook.Match();
 
             // Assert
+            Console.WriteLine($"[Match_SingleAskOrder_NoMatching] HasMatches={results.HasMatches}, BookCount={_orderbook.Count}, Bids={_orderbook.GetBidOrders().Count}, Asks={_orderbook.GetAskOrders().Count}");
             Assert.False(results.HasMatches);
             Assert.Equal(1, _orderbook.Count);
             Assert.Equal(1, _orderbook.GetAskOrders().Count);
@@ -79,6 +81,7 @@ namespace TradingEngineTests
             var results = _orderbook.Match();
 
             // Assert
+            Console.WriteLine($"[Match_CrossingOrders_MatchesCorrectly] HasMatches={results.HasMatches}, Filled={results.FilledOrders.Count}, Partials={results.PartialFills.Count}, Remaining={results.RemainingOrders.Count}, BookCount={_orderbook.Count}");
             Assert.True(results.HasMatches);
             Assert.Equal(2, results.FilledOrders.Count);
             Assert.Equal(0, _orderbook.Count); // Both orders should be fully filled
@@ -101,6 +104,7 @@ namespace TradingEngineTests
             var results = _orderbook.Match();
 
             // Assert
+            Console.WriteLine($"[Match_PriceTimePriority_Respected] HasMatches={results.HasMatches}, Filled={results.FilledOrders.Count}, BookCount={_orderbook.Count}, Bids={_orderbook.GetBidOrders().Count}, Asks={_orderbook.GetAskOrders().Count}");
             Assert.True(results.HasMatches);
             Assert.Equal(2, results.FilledOrders.Count);
             
@@ -127,6 +131,7 @@ namespace TradingEngineTests
             var results = _orderbook.Match();
 
             // Assert
+            Console.WriteLine($"[Match_PartialFill_HandledCorrectly] HasMatches={results.HasMatches}, Filled={results.FilledOrders.Count}, BookCount={_orderbook.Count}");
             Assert.True(results.HasMatches);
             Assert.Equal(2, results.FilledOrders.Count);
             Assert.Equal(1, _orderbook.Count); // Bid order should remain with partial quantity
@@ -153,6 +158,7 @@ namespace TradingEngineTests
             var results = _orderbook.Match();
 
             // Assert
+            Console.WriteLine($"[Match_MultiplePriceLevels_MatchesCorrectly] HasMatches={results.HasMatches}, Filled={results.FilledOrders.Count}, BookCount={_orderbook.Count}");
             Assert.True(results.HasMatches);
             Assert.Equal(4, results.FilledOrders.Count);
             Assert.Equal(0, _orderbook.Count); // All orders should be fully filled
@@ -171,6 +177,7 @@ namespace TradingEngineTests
             var results = _orderbook.Match();
 
             // Assert
+            Console.WriteLine($"[Match_NonCrossingOrders_NoMatching] HasMatches={results.HasMatches}, BookCount={_orderbook.Count}, Bids={_orderbook.GetBidOrders().Count}, Asks={_orderbook.GetAskOrders().Count}");
             Assert.False(results.HasMatches);
             Assert.Equal(2, _orderbook.Count);
             Assert.Equal(1, _orderbook.GetBidOrders().Count);
@@ -184,6 +191,7 @@ namespace TradingEngineTests
             var results = _orderbook.Match();
 
             // Assert
+            Console.WriteLine($"[Match_EmptyOrderbook_ReturnsEmptyResults] HasMatches={results.HasMatches}, Filled={results.FilledOrders.Count}");
             Assert.NotNull(results);
             Assert.False(results.HasMatches);
             Assert.Empty(results.FilledOrders);
@@ -204,6 +212,7 @@ namespace TradingEngineTests
             var results = _orderbook.Match();
 
             // Assert
+            Console.WriteLine($"[Match_OrderModification_UpdatesCorrectly] HasMatches={results.HasMatches}, BookCount={_orderbook.Count}, NewBidPrice={_orderbook.GetBidOrders().First().CurrentOrder.Price}, NewQty={_orderbook.GetBidOrders().First().CurrentOrder.CurrentQuantity}");
             Assert.Equal(1, _orderbook.Count);
             var updatedOrder = _orderbook.GetBidOrders().First();
             Assert.Equal(95, updatedOrder.CurrentOrder.Price);
@@ -225,6 +234,7 @@ namespace TradingEngineTests
             var results = _orderbook.Match();
 
             // Assert
+            Console.WriteLine($"[Match_OrderCancellation_RemovesCorrectly] HasMatches={results.HasMatches}, BookCount={_orderbook.Count}");
             Assert.Equal(0, _orderbook.Count);
             Assert.Empty(_orderbook.GetBidOrders());
             Assert.Empty(_orderbook.GetAskOrders());
@@ -243,6 +253,7 @@ namespace TradingEngineTests
             var spread = _orderbook.GetSpread();
 
             // Assert
+            Console.WriteLine($"[Match_SpreadCalculation_Correct] SpreadBid={spread?.Bid}, SpreadAsk={spread?.Ask}");
             Assert.Equal(95, spread.Bid);
             Assert.Equal(100, spread.Ask);
         }
